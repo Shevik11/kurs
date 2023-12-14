@@ -11,8 +11,8 @@ class teams_action {
             const result = await this.database.query(query);
             
     
-            if (result.length > 0 && result[0].id !== undefined) {
-                const my_result = result[0].id;
+            if (result.length > 0 && result[0].id !== undefined) { // check length and check if id is undefined
+                const my_result = result[0].id; // my result = id of first element
                 return my_result;
             } else {
                 console.error('Об\'єкт result порожній або не має властивості id.');
@@ -70,10 +70,10 @@ class teams_action {
         async GetTeamsFromSeason(season_name) {
             try {
                 let season_id = await this.convert_season_name_to_id(season_name);
-                console.log(season_id);
+                // console.log(season_id);
                 const query = `select season_name, team_name from teams inner join season on  teams.season_id = season.id where season_id = ${season_id};`;
                 const result = await this.database.query(query);
-                console.log(query);
+                // console.log(query);
                 return result;
                 // Обробка результатів
             } catch (error) {
@@ -92,12 +92,10 @@ class teams_action {
                 `);
         
                 // const resultInsert = await queryInsert.execute();
+                // const insertId = queryInsert.insertId;
         
-                // Отримання LAST_INSERT_ID() після вставки
-                const insertId = queryInsert.insertId;
-        
-                console.log(`Дані успішно вставлені в таблицю "teams" з id: ${insertId}.`);
-                return { success: true, id: insertId };
+                console.log(`Дані успішно вставлені в таблицю "teams"`);
+                return { success: true };
             } catch (error) {
                 console.error('Помилка при виконанні запиту:', error.message);
                 throw error;
@@ -107,15 +105,11 @@ class teams_action {
 
         
         
-        async changeTeamInfo(SeasonName, TeamName, changeIT, newValue) {            // Використовуйте передані параметри
+        async changeTeamInfo(SeasonName, TeamName, changeIT, newValue) {      
             this.SeasonName = SeasonName;
             this.changeIT = changeIT;
             this.newValue = newValue;
             this.TeamName = TeamName;
-            console.log(SeasonName);
-            console.log(TeamName);
-            console.log(changeIT);
-            console.log(newValue);
             let season_id = await this.convert_season_name_to_id(this.SeasonName);
             const query = this.database.query(`
                 update teams
@@ -130,19 +124,19 @@ class teams_action {
             try {
                 this.team_name = TeamName;
                 const team_id = await this.convert_team_name_to_id(this.team_name);
-                console.log(team_id);
+                // console.log(team_id);
         
                 const query1 = `DELETE FROM matches WHERE home_team_id = '${team_id}' OR away_team_id = '${team_id}'`;
                 await this.database.query(query1);
         
                 this.SeasonName = SeasonName;
-                console.log(SeasonName);
+                // console.log(SeasonName);
         
                 const season_id = await this.convert_season_name_to_id(this.SeasonName);
-                console.log(season_id);
+                // console.log(season_id);
         
                 const query = `DELETE FROM teams WHERE season_id = '${season_id}' AND team_name = '${TeamName}'`;
-                console.log(query);
+                // console.log(query);
         
                 await this.database.query(query);
         
@@ -161,7 +155,7 @@ class teams_action {
             try{
                 this.team_name = TeamName;
                 let team_id = await this.convert_team_name_to_id(this.team_name);
-                console.log(team_id);
+                // console.log(team_id);
                 const query1 = `delete from matches where home_team_id = '${team_id}' or away_team_id = '${team_id}'`
                 await this.database.query(query1);
 

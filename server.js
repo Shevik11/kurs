@@ -1,46 +1,47 @@
-import { db } from './static/static2/db.js';
+import  express from 'express';
+import paypal from 'paypal-rest-sdk'; // PayPal REST SDK for Node.js 
+import cors from 'cors'; // CORS (Cross-Origin Resource Sharing) middleware
+import multer from 'multer';
+import bodyParser from 'body-parser';
+import { fileURLToPath } from 'url'; // Function to convert file URLs to paths
+import { dirname} from 'path'; // Function to get the directory name from a path
+import path from 'path'; // Core module for working with file and directory paths
+
+// Modules
 import SeasonActions from './static/static2/season_actions.js';
 import  teams_action from "./static/static2/teams.js";
 import  Matches  from "./static/static2/matches.js";
-import   tables  from './static/static2/tables.js';
-import  express from 'express';
-import paypal from 'paypal-rest-sdk';
-import fs from 'fs';
-import cors from 'cors';
-import multer from 'multer';
-import bodyParser from 'body-parser';
-console.log("Starting")
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-import path from 'path';
+import  tables  from './static/static2/tables.js';
 
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __filename = fileURLToPath(import.meta.url); 
+const __dirname = dirname(__filename); // 
 
 
-paypal.configure({
-  'mode': 'sandbox',
-  'client_id': 'ATSccmKUYlTrgYBftuEbwsCaJgzNlXU7s1rrmU5WTbTyE_wGIv3MpecF_qdT5CPEcHyr0yFrtneH1iEq',
-  'client_secret': 'EA-9AJj0Pzq67kPeTWy-NM0FCpFzdWkDTfIDcvtEku0qupujR-cEKuco1LQR9Ue6ui9fRRnTuRIUoSMW'
-});
 const db_a = new SeasonActions();
 const ta = new teams_action();
 const match = new Matches();
 const table = new tables()
 
 const app = express();
-app.use(cors({
-    origin: '*'
-}));
-const port = 8000;
 
-app.use(multer().none()); // лише текстових даних
-app.use(express.json()); // автоматичного розпакування JSON-даних у тілі запиту
+// allow all origins
+app.use(cors({
+  origin: '*'
+}));
+
+app.use(multer().none()); 
+app.use(express.json()); 
 app.use(express.static('static', { index: false }));
 app.use(bodyParser.raw({ type: 'text/plain' }));
 
+const port = 8000;
 
+paypal.configure({
+  'mode': 'sandbox',
+  'client_id': 'ATSccmKUYlTrgYBftuEbwsCaJgzNlXU7s1rrmU5WTbTyE_wGIv3MpecF_qdT5CPEcHyr0yFrtneH1iEq',
+  'client_secret': 'EA-9AJj0Pzq67kPeTWy-NM0FCpFzdWkDTfIDcvtEku0qupujR-cEKuco1LQR9Ue6ui9fRRnTuRIUoSMW'
+});
 
 
 
@@ -57,7 +58,7 @@ app.post('/pay', (req, res) => {
       "transactions": [{
           "item_list": {
               "items": [{
-                  "name": "Red Sox Hat",
+                  "name": "Premium",
                   "sku": "001",
                   "price": "5.00",
                   "currency": "USD",
@@ -68,7 +69,7 @@ app.post('/pay', (req, res) => {
               "currency": "USD",
               "total": "5.00"
           },
-          "description": "Hat for the best team ever"
+          "description": "Premium function"
       }]
   };
 
@@ -89,11 +90,11 @@ app.post('/pay', (req, res) => {
       
       paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
         if (error) {
-          console.log(error.response);
+          console.log(error.response); // payment execution fails
           throw error;
         } else {
-          console.log(JSON.stringify(payment));
-          // Редірект на '/yes' при успішному виконанні платежу
+          // console.log(JSON.stringify(payment));
+          // Redirect to '/yes' if successful
           res.redirect('/yes');
         }
       });
@@ -103,9 +104,9 @@ app.post('/pay', (req, res) => {
       if (error) {
         throw error;
       } else {
-        for (let i = 0; i < payment.links.length; i++) {
-          if (payment.links[i].rel === 'approval_url') {
-            res.redirect(payment.links[i].href);
+        for (let i = 0; i < payment.links.length; i++) { // loop with linkd
+          if (payment.links[i].rel === 'approval_url') { // confirm link
+            res.redirect(payment.links[i].href); // Redirect to PayPal
           }
         }
       }
@@ -161,7 +162,7 @@ app.get('/teams', (req, res) => {
   app.get('/teams_show', async (req, res) => {
     try {
         const result = await ta.AllTeamsAndSeasons();
-        console.log('Result:', result); // Додайте лог
+        // console.log('Result:', result); // Додайте лог
         res.json(result);
     } catch (error) {
         console.error('Error in AllTeamsAndSeasons():', error); // Додайте лог

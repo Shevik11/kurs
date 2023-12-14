@@ -45,7 +45,7 @@ class Matches {
             const homeTeamId = await team.convert_team_name_to_id(homeTeamName);
             const awayTeamId = await team.convert_team_name_to_id(awayTeamName);
     
-            // Занести дані матчу до таблиці matches
+            // insert date to table matches
             const matchQuery = `
                 INSERT INTO matches (season_id, home_team_id, away_team_id, goals_scored_home, goals_scored_away, match_date)
                 VALUES ('${seasonId}', '${homeTeamId}', '${awayTeamId}', '${goalsScoredHome}', '${goalsScoredAway}', '${matchDate}')`;

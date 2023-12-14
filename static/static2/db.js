@@ -24,18 +24,14 @@ class Db {
         });
     }
 
-    async connect() {
-        // Підключення вже створено в конструкторі, тут просто можемо вивести повідомлення
-        console.log('Підключено до бази даних');
-    }
-
+    // виконання sql запиту
     async query(sql) {
-        return new Promise((resolve, reject) => { // створення нового обєкта проміс, що представляє результат асинхронної операції
-            this.connection.query(sql, (err, results) => { // виклик квері
+        return new Promise((resolve, reject) => { // create new object Promise
+            this.connection.query(sql, (err, results) => { // 
                 if (err) {
-                    reject(err); // обєкт помилки
+                    reject(err); // error object
                 } else {
-                    resolve(results); // результат запиту
+                    resolve(results); // result
                 }
             });
         });

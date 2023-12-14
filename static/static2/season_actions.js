@@ -29,7 +29,7 @@ class SeasonActions {
             };
 
             let tableHTML = '<table><tr>';
-            tableHTML += Object.keys(columnWidths).map(column => `<th>${column}</th>`).join('');
+            tableHTML += Object.keys(columnWidths).map(column => `<th>${column}</th>`).join(''); // get titles of table 
             tableHTML += '</tr>';
 
             // Форматуємо кожен рядок даних

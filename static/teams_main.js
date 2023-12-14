@@ -111,27 +111,26 @@ if (typeof document !== 'undefined') {
         
         if (ChangeTeamData) {
             ChangeTeamData.addEventListener('click', function () {
-                ChangeTeamData.addEventListener('click', function () {
-                    var team_name_for_update_ = team_name_for_update_input.value;
-                    var team_season_for_update = team_season_for_update_input.value;
-                    var what_user_want = what_user_want_to_change.value;
-                    var new_value = new_value_input.value;
-                
-                    // Перевірка чи отримані значення передаються правильно
-                    console.log(team_name_for_update_);
-                    console.log(team_season_for_update);
-                    console.log(what_user_want);
-                    console.log(new_value);
-                
-                    const data ={
-                        team_name_for_update_: team_name_for_update_,
-                        team_season_for_update: team_season_for_update,
-                        what_user_want: what_user_want,
-                        new_value: new_value
-                    }
+                var team_name_for_update_ = team_name_for_update_input.value;
+                var team_season_for_update = team_season_for_update_input.value;
+                var what_user_want = what_user_want_to_change.value;
+                var new_value = new_value_input.value;
+        
+                // Перевірка чи отримані значення передаються правильно
+                console.log(team_name_for_update_);
+                console.log(team_season_for_update);
+                console.log(what_user_want);
+                console.log(new_value);
+        
+                const data = {
+                    team_name_for_update_: team_name_for_update_,
+                    team_season_for_update: team_season_for_update,
+                    what_user_want: what_user_want,
+                    new_value: new_value
+                }
         
                 var createXhttpRequest = new XMLHttpRequest();
-                createXhttpRequest.open("POST", `http://localhost:8000/teams_change_data`, true);
+                createXhttpRequest.open("PUT", `http://localhost:8000/teams_change_data`, true);
                 createXhttpRequest.setRequestHeader('Content-Type', 'application/json');
                 createXhttpRequest.onreadystatechange = function () {
                     if (createXhttpRequest.readyState === 4) {
@@ -149,9 +148,8 @@ if (typeof document !== 'undefined') {
                 };
                 createXhttpRequest.send(JSON.stringify(data));
             });
-        })
-    }
-
+        }
+        
 
 
         if (TeamsFromSeason && resultElement2) {

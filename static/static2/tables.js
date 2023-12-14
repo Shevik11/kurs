@@ -1,4 +1,6 @@
 import db from "./db.js";
+import teams_action from "./teams.js";
+const team = new teams_action();
 
 export class tables {
     constructor() {

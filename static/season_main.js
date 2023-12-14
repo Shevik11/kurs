@@ -135,8 +135,8 @@ if (typeof document !== 'undefined') {
                 // Створення об'єкту XMLHttpRequest
                 const xhr = new XMLHttpRequest();
         
-                // Налаштування AJAX-запиту
-                xhr.open('POST', '/season_update', true);
+                // Налаштування AJAX-запиту для методу PUT
+                xhr.open('PUT', '/season_update', true);
                 xhr.setRequestHeader('Content-Type', 'application/json');
         
                 // Обробка події завершення запиту
@@ -156,4 +156,4 @@ if (typeof document !== 'undefined') {
                 xhr.send(JSON.stringify(data));
             });
         }
-      })}        
+      })}

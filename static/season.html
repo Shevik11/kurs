@@ -31,16 +31,18 @@
         </div>
 
         <div class="form-group">
-            <button id="updateButton" class="button">Оновити дані певного чемпіонату</button>
-            <br>
-            <br>
-            <input id="seasonNameInputUpdate" type="text" class="input" placeholder="Назва чемпіонату">
-            <input id="seasonYearInputUpdate" type="text" class="input" placeholder="Рік чемпіонату">
-            <br>
-            <input id="newSeasonNameInputUpdate" type="text" class="input" placeholder="Нова назва чемпіонату">
-            <input id="newSeasonYearInputUpdate" type="text" class="input" placeholder="Новий рік чемпіонату">
+            <form id="updateForm" class="form">
+                <button id="updateButton" class="button">Оновити дані певного чемпіонату</button>
+                <br>
+                <br>
+                <input id="seasonNameInputUpdate" name="seasonName" type="text" class="input" placeholder="Назва чемпіонату">
+                <input id="seasonYearInputUpdate" name="seasonYear" type="text" class="input" placeholder="Рік чемпіонату">
+                <br>
+                <input id="newSeasonNameInputUpdate" name="newSeasonName" type="text" class="input" placeholder="Нова назва чемпіонату">
+                <input id="newSeasonYearInputUpdate" name="newSeasonYear" type="text" class="input" placeholder="Новий рік чемпіонату">
+            </form>
         </div>
-    </div>
+        
 
 </body>
 </html>

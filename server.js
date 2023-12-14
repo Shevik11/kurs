@@ -25,6 +25,7 @@ const table = new tables()
 
 const app = express();
 
+
 // allow all origins
 app.use(cors({
   origin: '*'
@@ -138,11 +139,12 @@ app.post('/season_create', async (req, res) => {
     res.json(result);
   });
 
-app.post('/season_update', async (req, res) => {
+  app.put('/season_update', async (req, res) => {
     const { old_season_name, old_season_year, new_season_name, new_season_year } = req.body;
     const result = await db_a.updateData(old_season_name, old_season_year, new_season_name, new_season_year);
     res.json(result);
   });
+  
 
 app.delete('/season_delete', async(req, res) => {
     const season_name = req.body.season_name;
@@ -188,19 +190,20 @@ app.post('/teams_add', async (req, res) => {
   }
 });
 
-app.post('/teams_change_data', async (req, res) => {
-      // Отримання даних з тіла запиту
-      const team_name_for_update = req.body.team_name_for_update_;
-      const team_season_for_update = req.body.team_season_for_update;
-      const what_user_want = req.body.what_user_want;
-      const new_value = req.body.new_value;
+app.put('/teams_change_data', async (req, res) => {
+  // Отримання даних з тіла запиту
+  const team_name_for_update = req.body.team_name_for_update_;
+  const team_season_for_update = req.body.team_season_for_update;
+  const what_user_want = req.body.what_user_want;
+  const new_value = req.body.new_value;
 
-      // Обробка даних і виклик відповідної функції
-      const result = await ta.changeTeamInfo(team_season_for_update, team_name_for_update, what_user_want, new_value);
+  // Обробка даних і виклик відповідної функції
+  const result = await ta.changeTeamInfo(team_season_for_update, team_name_for_update, what_user_want, new_value);
 
-      // Відправлення відповіді клієнту
-      res.json(result);
-  });
+  // Відправлення відповіді клієнту
+  res.json(result);
+});
+
 
 app.delete('/teams_delete_in_season', async (req, res) => {
   const team_name = req.body.team_name;

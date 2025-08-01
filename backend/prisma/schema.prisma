@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Season {
+  id          Int      @id @default(autoincrement())
+  seasonName  String   @map("season_name")
+  seasonYear  String   @map("season_year")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  teams       Team[]
+  matches     Match[]
+
+  @@unique([seasonName, seasonYear], name: "season_name_year_unique")
+  @@map("season")
+}
+
+model Team {
+  id               Int @id @default(autoincrement())
+  teamName         String @map("team_name")
+  seasonId         Int @map("season_id")
+  winGames         Int @default(0) @map("win_games")
+  drawGames        Int @default(0) @map("draw_games")
+  loseGames        Int @default(0) @map("lose_games")
+  goalsScored      Int @default(0) @map("goals_scored")
+  goalsConceded    Int @default(0) @map("goals_conceded")
+  goalDifference   Int @default(0) @map("goal_difference")
+  points           Int @default(0)
+  matchesPlayed    Int @default(0) @map("matches_played")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  season           Season @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+  homeMatches      Match[] @relation("HomeTeam")
+  awayMatches      Match[] @relation("AwayTeam")
+
+  @@map("teams")
+}
+
+model Match {
+  id               Int      @id @default(autoincrement())
+  seasonId         Int      @map("season_id")
+  homeTeamId       Int      @map("home_team_id")
+  awayTeamId       Int      @map("away_team_id")
+  goalsScoredHome  Int      @default(0) @map("goals_scored_home")
+  goalsScoredAway  Int      @default(0) @map("goals_scored_away")
+  matchDate        DateTime @map("match_date") @db.Date
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  season           Season @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+  homeTeam         Team   @relation("HomeTeam", fields: [homeTeamId], references: [id], onDelete: Cascade)
+  awayTeam         Team   @relation("AwayTeam", fields: [awayTeamId], references: [id], onDelete: Cascade)
+
+  @@map("matches")
+}

@@ -1,0 +1,39 @@
+/* src/app.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Your existing global styles can go below these directives */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4; /* A light background for contrast */
+  color: #333;
+}
+
+/* Remove or adjust old global styles that clash with Tailwind */
+/* For instance, the general button and input styles from previous app.css */
+:global(button) {
+  /* Tailwind will handle these now, or you can define custom components */
+}
+:global(input[type="text"], input[type="number"], input[type="date"], select) {
+  /* Tailwind will handle these now */
+}
+/* You might keep some like these if not fully covered by Tailwind */
+:global(.error) {
+  color: red;
+  margin-top: 0.5rem;
+}
+:global(ul) {
+  list-style: none;
+  padding: 0;
+}
+/* For the list items, Tailwind will provide more control */
+/* :global(li) {
+  background-color: #f9f9f9;
+  margin-bottom: 0.5rem;
+  padding: 1rem;
+  border: 1px solid #eee;
+  border-radius: 4px;
+} */

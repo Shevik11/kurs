@@ -25,7 +25,7 @@ const MatchController = {
       const schedule = await Match.generateSchedule(season_name);
       res.json({ 
         success: true, 
-        message: `Згенеровано ${schedule.length} матчів для сезону ${season_name}`,
+        message: `Generated ${schedule.length} matches for season ${season_name}`,
         matches: schedule 
       });
     } catch (err) {
@@ -45,7 +45,7 @@ const MatchController = {
     try {
       const { matchId } = req.params;
       await Match.deleteMatch(matchId);
-      res.json({ success: true, message: 'Матч успішно видалено' });
+      res.json({ success: true, message: 'Match successfully deleted' });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }

@@ -7,13 +7,11 @@ export const createMatchTable = async () => {
 
 const Match = {
   async playMatch(seasonName, homeTeamName, awayTeamName, goalsHome, goalsAway, matchDate) {
-    // Get season
     const season = await prisma.season.findFirst({
       where: { seasonName }
     });
     if (!season) throw new Error('Season not found');
 
-    // Get teams
     const homeTeam = await prisma.team.findFirst({
       where: { 
         teamName: homeTeamName,
@@ -29,7 +27,6 @@ const Match = {
 
     if (!homeTeam || !awayTeam) throw new Error('Team not found');
 
-    // Create match
     return await prisma.match.create({
       data: {
         seasonId: season.id,
@@ -71,7 +68,6 @@ const Match = {
   },
 
   async generateSchedule(seasonName) {
-    // Отримуємо сезон та всі команди
     const season = await prisma.season.findFirst({
       where: { seasonName },
       include: {
@@ -83,23 +79,22 @@ const Match = {
     
     const teams = season.teams;
     if (teams.length < 2) {
-      throw new Error('Потрібно мінімум 2 команди для генерації розкладу');
+      throw new Error('At least 2 teams required to generate schedule');
     }
 
-    // Перевіряємо чи вже існують матчі для цього сезону
+    // Check if matches already exist for this season
     const existingMatches = await this.getBySeason(seasonName);
     if (existingMatches.length > 0) {
-      throw new Error('Розклад вже згенеровано для цього сезону. Видаліть існуючі матчі спочатку.');
+      throw new Error('Schedule already generated for this season. Delete existing matches first.');
     }
 
-    // Генеруємо матчі кожен з кожним (круговий турнір)
+    // Generate round-robin tournament matches
     const matches = [];
     const startDate = new Date();
     let matchDate = new Date(startDate);
 
     for (let i = 0; i < teams.length; i++) {
       for (let j = i + 1; j < teams.length; j++) {
-        // Перший матч - команда i дома
         matches.push({
           seasonId: season.id,
           homeTeamId: teams[i].id,
@@ -109,9 +104,8 @@ const Match = {
           matchDate: new Date(matchDate)
         });
         
-        matchDate.setDate(matchDate.getDate() + 7); // +7 днів між матчами
+        matchDate.setDate(matchDate.getDate() + 7);
         
-        // Зворотний матч - команда j дома  
         matches.push({
           seasonId: season.id,
           homeTeamId: teams[j].id,
@@ -125,7 +119,6 @@ const Match = {
       }
     }
 
-    // Додаємо матчі в базу даних
     await prisma.match.createMany({
       data: matches
     });
@@ -134,7 +127,6 @@ const Match = {
   },
 
   async getTournamentTable(seasonName) {
-    // Отримуємо статистику команд
     const teams = await prisma.team.findMany({
       where: {
         season: {
@@ -149,7 +141,6 @@ const Match = {
       ]
     });
 
-    // Додаємо позицію в таблиці
     const table = teams.map((team, index) => ({
       position: index + 1,
       team_name: team.teamName,
@@ -174,7 +165,7 @@ const Match = {
     });
     
     if (!deleted) {
-      throw new Error('Матч не знайдено');
+      throw new Error('Match not found');
     }
     
     return { success: true };

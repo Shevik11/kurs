@@ -21,7 +21,7 @@ app.use('/api/teams', teamRoutes);
 app.use('/api/matches', matchRoutes);
 app.use('/api/paypal', paypalRoutes);
 
-// Serve static for PayPal HTML (тимчасово)
+
 app.use('/static', express.static(path.join(__dirname, '../../kurs/static')));
 
 export default app; 

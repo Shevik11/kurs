@@ -9,7 +9,7 @@
     errorMessage = '';
     message = 'Redirecting to PayPal...';
     try {
-      // The paypalApi.createPayment function handles the redirection to PayPal
+  
       await paypalApi.createPayment();
     } catch (error) {
       errorMessage = error.message;

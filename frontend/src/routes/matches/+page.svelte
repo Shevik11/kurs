@@ -140,7 +140,7 @@
       await matchApi.deleteMatch(deletingMatch.id);
       successMessage = 'Матч успішно видалено!';
       deletingMatch = null;
-      await fetchMatchesForView(); // Оновлюємо список матчів
+      await fetchMatchesForView();
     } catch (error) {
       errorMessage = error.message;
       deletingMatch = null;
@@ -159,7 +159,7 @@
     try {
       const result = await matchApi.generateSchedule(selectedSeasonForPlay);
       successMessage = result.message;
-      await fetchMatchesForView(); // Оновлюємо список матчів
+      await fetchMatchesForView();
     } catch (error) {
       errorMessage = error.message;
     }

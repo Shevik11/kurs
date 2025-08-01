@@ -1,8 +1,4 @@
-// src/lib/api.ts
-
-const BASE_URL = 'http://localhost:8000/api'; // Replace with your backend URL if different
-
-// Generic API response handler
+const BASE_URL = 'http://localhost:8000/api';
 async function handleResponse<T>(response: Response): Promise<T> {
   console.log(`API Response: ${response.status} ${response.statusText}`);
   
@@ -26,11 +22,9 @@ async function handleResponse<T>(response: Response): Promise<T> {
     throw new Error('Invalid JSON response from server');
   }
 }
-
-// --- Types ---
 export interface Season {
   season_name: string;
-  season_year: string; // Changed to string to match database VARCHAR type
+  season_year: string; 
 }
 
 export interface Team {
@@ -60,8 +54,6 @@ export interface TournamentTeam {
   goal_difference: number;
   points: number;
 }
-
-// --- Season API calls ---
 export const seasonApi = {
   getAll: async (): Promise<Season[]> => {
     const response = await fetch(`${BASE_URL}/seasons`);
@@ -97,8 +89,6 @@ export const seasonApi = {
     return handleResponse<{ message: string }>(response);
   },
 };
-
-// --- Team API calls ---
 export const teamApi = {
   getAllWithSeasons: async (): Promise<Team[]> => {
     const response = await fetch(`${BASE_URL}/teams`);
@@ -146,8 +136,6 @@ export const teamApi = {
     return handleResponse<{ message: string }>(response);
   },
 };
-
-// --- Match API calls ---
 export const matchApi = {
   playMatch: async (
     season_name: string,
@@ -187,23 +175,18 @@ export const matchApi = {
     return handleResponse(response);
   },
 };
-
-// --- PayPal API calls ---
 export const paypalApi = {
   createPayment: async (): Promise<void> => {
     const response = await fetch(`${BASE_URL}/paypal/pay`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({}) // Backend doesn't use request body for this, but POST usually implies one
+      body: JSON.stringify({})
     });
     const data: { approval_url?: string } = await handleResponse(response);
     if (data.approval_url) {
-      window.location.href = data.approval_url; // Redirect to PayPal
+      window.location.href = data.approval_url;
     } else {
       throw new Error('No PayPal approval URL received.');
     }
-  },
-  // The success and cancel routes are handled by PayPal redirecting to your backend,
-  // which then might redirect to your frontend success/cancel pages.
-  // We'll create those frontend pages.
+  }
 }; 

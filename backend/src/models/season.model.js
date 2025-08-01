@@ -27,10 +27,9 @@ const Season = {
   },
   
   async create(seasonName, seasonYear) {
-    // Перевіряємо чи існує вже такий сезон
     const exists = await this.exists(seasonName, seasonYear);
     if (exists) {
-      throw new Error(`Сезон "${seasonName}" ${seasonYear} вже існує`);
+      throw new Error(`Season "${seasonName}" ${seasonYear} already exists`);
     }
     
     return await prisma.season.create({
@@ -42,11 +41,11 @@ const Season = {
   },
 
   async update(oldName, oldYear, newName, newYear) {
-    // Якщо змінюються дані, перевіряємо чи не існує вже такого сезону
+    // If data is changing, check if season already exists
     if (oldName !== newName || oldYear !== newYear) {
       const exists = await this.exists(newName, newYear);
       if (exists) {
-        throw new Error(`Сезон "${newName}" ${newYear} вже існує`);
+        throw new Error(`Season "${newName}" ${newYear} already exists`);
       }
     }
     
@@ -62,7 +61,7 @@ const Season = {
     });
     
     if (updated.count === 0) {
-      throw new Error(`Сезон "${oldName}" ${oldYear} не знайдено`);
+      throw new Error(`Season "${oldName}" ${oldYear} not found`);
     }
     
     return updated;
@@ -77,7 +76,7 @@ const Season = {
     });
     
     if (deleted.count === 0) {
-      throw new Error(`Сезон "${seasonName}" ${seasonYear} не знайдено`);
+      throw new Error(`Season "${seasonName}" ${seasonYear} not found`);
     }
     
     return deleted;

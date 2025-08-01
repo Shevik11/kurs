@@ -47,7 +47,7 @@
     try {
       const result = await matchApi.generateSchedule(selectedSeason);
       successMessage = result.message;
-      await fetchTournamentTable(); // Оновлюємо таблицю
+      await fetchTournamentTable();
     } catch (error) {
       errorMessage = error.message;
     } finally {

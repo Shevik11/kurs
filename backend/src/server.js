@@ -3,17 +3,17 @@ import prisma from './lib/prisma.js';
 
 const PORT = process.env.PORT || 8000;
 
-// Ініціалізація Prisma з'єднання
+// Initialize Prisma connection
 (async () => {
   try {
     await prisma.$connect();
-    console.log('Підключено до бази даних через Prisma');
+    console.log('Connected to database via Prisma');
     
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
   } catch (error) {
-    console.error('Помилка підключення до бази даних:', error);
+    console.error('Database connection error:', error);
     process.exit(1);
   }
 })();

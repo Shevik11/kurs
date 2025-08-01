@@ -16,7 +16,6 @@ const Team = {
       }
     });
 
-    // Group seasons by team name
     const teamMap = new Map();
     teams.forEach(team => {
       if (!teamMap.has(team.teamName)) {
@@ -83,7 +82,6 @@ const Team = {
       throw new Error('Season not found');
     }
 
-    // Map field names to Prisma field names
     const fieldMap = {
       'team_name': 'teamName',
       'win_games': 'winGames',

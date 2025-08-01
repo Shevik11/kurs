@@ -42,7 +42,7 @@
             return;
         }
         
-        // Перевіряємо дублікати на фронтенді
+
         const duplicate = seasons.find(s => 
             s.season_name.toLowerCase() === newName.toLowerCase() && 
             s.season_year === newYear
@@ -81,7 +81,7 @@
             return;
         }
         
-        // Перевіряємо дублікати тільки якщо змінюються дані
+
         if (editingName !== editingSeason.season_name || editingYear !== editingSeason.season_year) {
             const duplicate = seasons.find(s => 
                 s.season_name.toLowerCase() === editingName.toLowerCase() && 
